@@ -1,0 +1,30 @@
+{
+  "name": "cordova-plugin-contextmenu",
+  "version": "1.0.0",
+  "description": "Cordova Context Menu Plugin",
+  "cordova": {
+    "id": "cordova-plugin-contextmenu",
+    "platforms": [
+      "android"
+    ]
+  },
+  "keywords": [
+    "android",
+    "contextmenu",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "",
+  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/"
+  },
+  "homepage": ""
+}
