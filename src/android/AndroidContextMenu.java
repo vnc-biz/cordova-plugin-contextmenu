@@ -32,6 +32,7 @@ public class AndroidContextMenu extends CordovaPlugin {
     private static Window.Callback windowCallback;
 
     private CallbackContext callback = null;
+    private boolean dismissMenu;
 
     protected Window.Callback getWindowCallback() {
         if (windowCallback == null) {
@@ -49,6 +50,11 @@ public class AndroidContextMenu extends CordovaPlugin {
         if ("setCallback".equals(action)) {
             callback = callbackContext;
             initCallbacks();
+            return true;
+        }
+
+        if ("setDismissMenu".equals(action)) {
+            dismissMenu = args.getBoolean(0);
             return true;
         }
 
@@ -135,30 +141,32 @@ public class AndroidContextMenu extends CordovaPlugin {
 
             @Override
             public void onActionModeStarted(ActionMode mode) {
-                if (mode != null) {
-                    mode.finish();
-                }
-                if (webView != null) {
-                    webView.getEngine().evaluateJavascript("window.getSelection().toString()", new ValueCallback<String>() {
-                        @Override
-                        public void onReceiveValue(String value) {
-                            if (value != null) {
-                                if (callback != null) {
-                                    try {
-                                        JSONObject parameter = new JSONObject();
-                                        parameter.put("selectedText", value);
-                                        PluginResult result = new PluginResult(PluginResult.Status.OK, parameter);
-                                        result.setKeepCallback(true);
-                                        callback.sendPluginResult(result);
-                                    } catch (JSONException e) {
-                                        callback.error(e.getMessage());
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                windowCallback.onActionModeStarted(mode);
+              if (dismissMenu) {
+                  if (mode != null) {
+                      mode.finish();
+                  }
+                  if (webView != null) {
+                      webView.getEngine().evaluateJavascript("window.getSelection().toString()", new ValueCallback<String>() {
+                          @Override
+                          public void onReceiveValue(String value) {
+                              if (value != null) {
+                                  if (callback != null) {
+                                      try {
+                                          JSONObject parameter = new JSONObject();
+                                          parameter.put("selectedText", value);
+                                          PluginResult result = new PluginResult(PluginResult.Status.OK, parameter);
+                                          result.setKeepCallback(true);
+                                          callback.sendPluginResult(result);
+                                      } catch (JSONException e) {
+                                          callback.error(e.getMessage());
+                                      }
+                                  }
+                              }
+                          }
+                      });
+                  }
+              }
+              windowCallback.onActionModeStarted(mode);
             }
 
             @Override
