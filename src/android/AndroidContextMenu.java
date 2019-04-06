@@ -116,6 +116,7 @@ public class AndroidContextMenu extends CordovaPlugin {
 
             @Override
             public void onDetachedFromWindow() {
+                System.exit(0);
                 windowCallback.onDetachedFromWindow();
             }
 
